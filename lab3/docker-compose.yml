@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  nginx:
+    build: ./nginx
+    container_name: lab3-nginx
+    ports:
+      - "8080:80"
+      - "8443:443"
+    networks:
+      - webnet
+
+networks:
+  webnet:
+    driver: bridge
