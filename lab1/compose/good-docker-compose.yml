@@ -1,0 +1,54 @@
+services:
+  app1:
+    build: ./app
+    container_name: app1
+    restart: unless-stopped
+    ports:
+      - "8081:80"
+    env_file:
+      - .env
+    networks:
+      - net1
+    mem_limit: 256m
+    mem_reservation: 128m
+    cpus: '0.5'
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  app2:
+    build: ./app
+    container_name: app2
+    restart: unless-stopped
+    ports:
+      - "8082:80"
+    env_file:
+      - .env
+    networks:
+      - net2
+    mem_limit: 256m
+    mem_reservation: 128m
+    cpus: '0.5'
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+networks:
+  net1:
+    driver: bridge
+    name: isolated_net1
+    ipam:
+      config:
+        - subnet: 172.20.0.0/24
+  net2:
+    driver: bridge
+    name: isolated_net2
+    ipam:
+      config:
+        - subnet: 172.21.0.0/24

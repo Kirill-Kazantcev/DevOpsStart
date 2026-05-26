@@ -1,0 +1,11 @@
+name: lab2-app
+replicaCount: 3
+
+image:
+  repository: lab2-app
+  tag: 1.0.2
+  pullPolicy: Never
+
+service:
+  type: NodePort
+  nodePort: 30080

@@ -1,0 +1,10 @@
+admin
+login
+secret
+hidden
+backup
+.git
+.env
+config
+.DS_Store
+admin/secret
