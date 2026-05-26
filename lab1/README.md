@@ -25,8 +25,7 @@ lab1/
 ├── scripts/
 │ ├── build-and-run.sh          # Скрипт сборки и запуска
 │ ├── test-isolation.sh         # Скрипт тестирования изоляции
-│ ├── cleanup.sh                # Скрипт очистки
-│ └── check-tz.sh               # Скрипт проверки соответствия ТЗ
+│ └── cleanup.sh                # Скрипт очистки
 │ 
 └── README.md
 ```
