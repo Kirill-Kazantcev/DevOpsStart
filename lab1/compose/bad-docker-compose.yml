@@ -1,0 +1,18 @@
+services:
+  web:
+    build: ./app
+    
+    #1: Пароль в коде
+    environment:
+      - DB_PASSWORD=admin123
+      - API_KEY=secretkey
+    
+    #2: host network (нет изоляции)
+    network_mode: host
+    
+    #3: Нет restart policy
+    #4: Нет лимитов ресурсов
+    #5: Нет healthcheck
+    
+    ports:
+      - "80:80"
