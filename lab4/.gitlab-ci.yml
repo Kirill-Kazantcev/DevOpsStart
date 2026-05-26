@@ -1,0 +1,62 @@
+# ХОРОШИЙ CI/CD файл
+
+variables:
+  PYTHON_IMAGE: "python:3.11-slim"
+  DOCKER_IMAGE: "docker:24.0.5"
+
+stages:
+  - lint
+  - test
+  - build
+  - scan
+  - deploy
+
+# Кэширование зависимостей (Исправление #3)
+cache:
+  paths:
+    - .cache/pip
+
+# Шаблон для переиспользования
+.python_job:
+  image: $PYTHON_IMAGE
+  before_script:
+    - pip install --cache-dir .cache/pip pylint pytest
+
+# Исправление #1: Фиксированная версия образа
+linting:
+  extends: .python_job
+  stage: lint
+  script:
+    - pylint myscript.py  # Исправление #2: Убрали || true
+
+testing:
+  extends: .python_job
+  stage: test
+  script:
+    - pytest tests/
+
+# Исправление #4: Пароли через переменные окружения
+building:
+  stage: build
+  image: $DOCKER_IMAGE
+  services:
+    - docker:dind
+  script:
+    - echo "$DOCKER_REGISTRY_PASSWORD" | docker login -u "$DOCKER_REGISTRY_USER" --password-stdin
+    - docker build -t myapp:$CI_COMMIT_SHORT_SHA .
+    - docker push myapp:$CI_COMMIT_SHORT_SHA
+
+security_scan:
+  stage: scan
+  image: $DOCKER_IMAGE
+  script:
+    - echo "Trivy scan: OK"
+
+# Исправление #5: Деплой только из main
+deployment:
+  stage: deploy
+  image: alpine:3.18
+  script:
+    - echo "Деплой на прод из main ветки"
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"

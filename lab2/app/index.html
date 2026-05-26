@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Lab 2: Kubernetes + Helm</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 100px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+        h1 { color: #fff; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
+    </style>
+</head>
+<body>
+    <h1>Лабораторная работа №2</h1>
+    <p>Kubernetes + Helm</p>
+    <p>Версия: 1.0.2</p>
+    <p>Под: <span id="pod">загрузка...</span></p>
+    <script>
+        fetch('/hostname')
+            .then(r => r.text())
+            .then(data => document.getElementById('pod').innerText = data);
+    </script>
+</body>
+</html>

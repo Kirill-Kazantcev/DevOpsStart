@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lab2-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: lab2-app
+  template:
+    metadata:
+      labels:
+        app: lab2-app
+    spec:
+      containers:
+      - name: app
+        image: lab2-app:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 80
