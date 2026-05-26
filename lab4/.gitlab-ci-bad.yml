@@ -1,0 +1,47 @@
+# ПЛОХОЙ CI/CD файл - 5+ антипаттернов
+
+stages:
+  - lint
+  - test
+  - build
+  - scan
+  - deploy
+
+# Антипаттерн #1: Использование :latest (нестабильно)
+job_lint:
+  stage: lint
+  image: python:latest
+  script:
+    - pip install pylint
+    - pylint myscript.py || true  # Антипаттерн #2: Игнорирование ошибок
+
+# Антипаттерн #3: Нет кэширования зависимостей
+job_test:
+  stage: test
+  image: python:latest
+  script:
+    - pip install pytest
+    - pytest tests/
+
+# Антипаттерн #4: Хардкод паролей
+job_build:
+  stage: build
+  image: docker:latest
+  script:
+    - docker build -t myapp:latest .
+    - docker login -u "admin" -p "p@ssword123"  # Пароль в коде!
+    - docker push myapp:latest
+
+job_scan:
+  stage: scan
+  image: docker:latest
+  script:
+    - echo "Сканируем образ"
+
+# Антипаттерн #5: Деплой из любой ветки
+job_deploy:
+  stage: deploy
+  image: alpine:latest
+  script:
+    - echo "Деплой на прод!"
+    - scp -r ./build user@prod-server:/var/www/
